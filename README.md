@@ -1,24 +1,30 @@
-# SimplePacket
+# SimplePacket - @VisualGPS
+Monte Variakojis @VisualGPS
 
 The SimplePacket project demonstrates a simple robust packet protocol for use with various media such as serial ports or even sockets. SimplePacket is intended to be very simple and has been used in many projects and platforms including Linux, Windows, and embedded projects. It's only two files, SimplePacket.cpp and SimplePacket.h.
 
 ## Packet Format
 
-The packet is composed of a Start of Message (SOM), command, data length, data payload, and a checksum. All protocol data is represented in Big Endian encoding. Although it's up to you on how the data payload is used. It's recommended that any formatted payload data follows Big Endian encoding.
- 
+The packet is composed of a Start of Message (SOM), command, data length, data payload, and a checksum field. All protocol data is represented in Big Endian encoding. Although it's up to you on how the data payload is used. It's recommended that any formatted payload data follows Big Endian encoding.
+
+### Packet
+| SOM | COMMAND | DATA_LENGTH | DATA | CRC
+
+#### Field Description
+
 | Field       | Size          | Description                                             |
 | ----------- | ------------- | ------------------------------------------------------- |
 | SOM         | uint16_t (2)  | Start of message and is set to 0x55AA                   |
 | COMMAND     | uint16_t (2)  | Command - 0 to 65535                                    |
 | DATA_LENGTH | uint32_t (4)  | Data length, 0 to 2^32 - 1                              |
 | DATA        | variable      | Payload data (omitted if DATA_LENGTH == 0)              |
-| CRC         | uint16_t (2)  | CRC 16 of COMMAND, DATA_LENGTH, and DATA                 |
+| CRC         | uint16_t (2)  | CRC 16 of COMMAND, DATA_LENGTH, and DATA                |
 
 ## Software Design
 
 The idea of this class is to define packet formatting allowing you to concentrate on the payload data. The class CSimplePacket is OS, platform independent, and must be used as a base class. 
 
-The receive parser is driving by a state machine where the individual states are defined the the enumeration CSimplePacket::RX_STATE_E.
+The receive parser is driven by a state machine where the individual states are defined the the enumeration CSimplePacket::RX_STATE_E. You simply feed the CSimplePacket::ProcessRxBuffer() method data. Since it's a state machine, you can feed the method a single byte at a time or large buffers. When the parser completes parsing and verifies a packet, the state machine will call OnProcessCommad() method where you can process the payload data.
 
 There are some mandatory virtual methods that the derived class will need to redefine. These methods are:
 
@@ -85,7 +91,7 @@ The class library is two files, SimplePacket.cpp and SimplePacket.h and includes
 
 ## Build
 
-This I've implemented test software to demonistrate the use of CSimplePacket. It uses cmake allow you to build this 
+This project is managed using cmake and can be built using your favorite operating system.
 
 ### Linux/Unix based
 
