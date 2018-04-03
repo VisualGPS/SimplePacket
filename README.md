@@ -1,4 +1,4 @@
-# SimplePacket - @VisualGPS
+# SimplePacket
 Monte Variakojis @VisualGPS
 
 The SimplePacket project demonstrates a simple robust packet protocol for use with various media such as serial ports or even sockets. SimplePacket is intended to be very simple and has been used in many projects and platforms including Linux, Windows, and embedded projects. It's only two files, SimplePacket.cpp and SimplePacket.h.
