@@ -8,8 +8,8 @@ project(SimplePacketLib)
 if(MSVC)
 	# Do nothing for now...
 else()
-        set(CMAKE_CXX_FLAGS " -Wall")
-        set (CMAKE_CXX_STANDARD 11)
+	set(CMAKE_CXX_FLAGS " -Wall -Werror")
+    set (CMAKE_CXX_STANDARD 11)
 endif ()
 
 #
