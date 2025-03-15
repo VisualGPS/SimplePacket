@@ -19,8 +19,8 @@
 
 
 ///
-/// \class CSimplePacket
-/// \brief This class will packetize or depacketize data and pass the results to the child
+/// @class CSimplePacket
+/// @brief This class will packetize or depacketize data and pass the results to the child
 /// class.
 ///
 /// The parser does not require whole packets to be received. One byte at a time or
@@ -72,59 +72,59 @@ private:
 
 public:
 	///
-	/// \brief This constructor will need a pointer to a storage buffer as well as its size.
+	/// @brief This constructor will need a pointer to a storage buffer as well as its size.
 	///
-	/// \param pDataBuff Pointer to a data buffer to store receive data to
-	/// \param nDataBuffSize Size of pDataBuff
+	/// @param pDataBuff Pointer to a data buffer to store receive data to
+	/// @param nDataBuffSize Size of pDataBuff
 	///
 	CSimplePacket(uint8_t *pDataBuff, size_t nDataBuffSize);
 	virtual ~CSimplePacket();
 
 	///
-	/// \brief Receive data processor. This method will build a command and
+	/// @brief Receive data processor. This method will build a command and
 	/// dispatch the command if the checksum is good.
 	///
 	/// Note: You can feed data in small amounts or large.
 	///
-	/// \param pData Data buffer to parse
-	/// \param nSize Number of bytes to process in pData
+	/// @param pData Data buffer to parse
+	/// @param nSize Number of bytes to process in pData
 	///
 	virtual void ProcessRxBuffer(uint8_t *pData, size_t nSize);
 
 	///
-	/// \brief Resets all state machines and data
+	/// @brief Resets all state machines and data
 	///
 	void Reset(void);
 
 	///
-	/// \brief Returns true if the packet parser is waiting for SOM.
+	/// @brief Returns true if the packet parser is waiting for SOM.
 	/// \return true = Waiting for SOM, false = parsing
 	///
 	bool IsWaitingForSOM(void){ return m_nRxState == RX_STATE_SOM_1?true:false; }
 
 	///
-	/// \brief This method is called when a successful command is processed
+	/// @brief This method is called when a successful command is processed
 	///
 	/// Redefine this class in your child class to parse commands that you have defined.
 	///
-	/// \param uCommand Two byte command
-	/// \param pData Pointer to data buffer of received data for this command
-	/// \param nLength Number of data bytes received
+	/// @param uCommand Two byte command
+	/// @param pData Pointer to data buffer of received data for this command
+	/// @param nLength Number of data bytes received
 	///
 	virtual void OnProcessCommand(uint16_t uCommand, uint8_t *pData, size_t nLength) = 0;
 
 	///
-	/// \brief This method is called when an error occurs. Please note that
+	/// @brief This method is called when an error occurs. Please note that
 	/// uCommand, pData and nLength are not guaranteed and provided for debugging reference
 	/// only.
 	///
 	/// NOTE: Redefine this method to capture any errors.
 	///
-	/// \param nError ERROR_T error number being reported
-	/// \param uCommand Two byte command
-	/// \param pData Pointer to data buffer of received data for this command
-	/// \param nLength Number of data bytes received
-	/// \param uRxSOM Received SOM - This is what was received
+	/// @param nError ERROR_T error number being reported
+	/// @param uCommand Two byte command
+	/// @param pData Pointer to data buffer of received data for this command
+	/// @param nLength Number of data bytes received
+	/// @param uRxSOM Received SOM - This is what was received
 	///
     virtual void OnError(CSimplePacket::ERROR_E nError, uint16_t uCommand, uint8_t *pData, size_t nLength, uint16_t uRxSOM){
         UNUSED_PARAM(nError);
@@ -135,44 +135,44 @@ public:
     }
 
 	///
-	/// \brief Write a single data packet.
+	/// @brief Write a single data packet.
 	///
 	/// NOTE: You will need to redefine CSimplePacket::Write 
-	/// \param uCommand Command to write
-	/// \param pData Data associated with the command
-	/// \param nLength Number of bytes in pData to write
+	/// @param uCommand Command to write
+	/// @param pData Data associated with the command
+	/// @param nLength Number of bytes in pData to write
 	///
 	void WritePacket(uint16_t uCommand, uint8_t *pData, size_t nLength);
 
 private:
 
 	///
-	/// \brief You must redefine this method to write data to your serial media.
+	/// @brief You must redefine this method to write data to your serial media.
 	///
 	/// NOTE: The transport media can be whatever your project requires.
 	///
-	/// \param pData Pointer to data buffer to write
-	/// \param nLength Number of bytes to write
+	/// @param pData Pointer to data buffer to write
+	/// @param nLength Number of bytes to write
 	/// \return Number of bytes written
 	///
 	virtual int Write(uint8_t *pData, size_t nLength) = 0;
 
 	///
-	/// \brief Redefine this method to support a mutex lock
+	/// @brief Redefine this method to support a mutex lock
 	///
 	virtual void WriteLock(void) {}
 
 	///
-	/// \brief Redefine this method to unlock the mutex
+	/// @brief Redefine this method to unlock the mutex
 	///
 	virtual void WriteUnlock(void) {}
 
 	///
-	/// \brief THis is a CRC-16-CCITT (poly 0x1021) checksum method.
+	/// @brief THis is a CRC-16-CCITT (poly 0x1021) checksum method.
 	///
-	/// \param u16CRC Current checksum
-	/// \param pData Buffer to calculate checksum on
-	/// \param bReset When true the method will reset the CRC before running the calculation. When false, the method will continue to calculate the checksum.
+	/// @param u16CRC Current checksum
+	/// @param pData Buffer to calculate checksum on
+	/// @param bReset When true the method will reset the CRC before running the calculation. When false, the method will continue to calculate the checksum.
 	/// \return uint16_t Calculated CRC
 	///
 	uint16_t crc16(uint16_t u16CRC, uint8_t * pData, int nLen, bool bReset = false);

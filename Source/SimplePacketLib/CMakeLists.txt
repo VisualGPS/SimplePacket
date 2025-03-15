@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.20)
 
 #
 # About the project
@@ -11,7 +11,6 @@ if(MSVC)
 else()
         set(CMAKE_CXX_FLAGS " -Wall")
         set (CMAKE_CXX_STANDARD 11)
-        
 endif ()
 
 #
@@ -37,7 +36,8 @@ add_library(SimplePacketLib
 find_package(Doxygen)
 option(BUILD_DOCUMENTATION "Create and install the HTML based API documentation (requires Doxygen)" ${DOXYGEN_FOUND})
 
-if(BUILD_DOCUMENTATION)
+if(BUILD_DOCUMENTATION)       
+
     if(NOT DOXYGEN_FOUND)
         message(WARNING "Doxygen is needed to build the documentation. Skipping this step. Install Doxygen if you want html source documentation.")
     else()
