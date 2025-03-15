@@ -5,7 +5,6 @@ cmake_minimum_required(VERSION 3.20)
 #
 project(SimplePacketLib)
 
-
 if(MSVC)
 	# Do nothing for now...
 else()
@@ -27,10 +26,7 @@ add_library(SimplePacketLib
 	SimplePacket.h
 )
 
-#
-# Add additional libraries
-#
-#target_link_libraries(rt pthread)
+target_include_directories(SimplePacketLib INTERFACE . )
 
 # add a target to generate API documentation with Doxygen
 find_package(Doxygen)

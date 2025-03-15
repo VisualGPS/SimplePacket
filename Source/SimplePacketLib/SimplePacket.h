@@ -98,9 +98,9 @@ public:
 
 	///
 	/// @brief Returns true if the packet parser is waiting for SOM.
-	/// \return true = Waiting for SOM, false = parsing
+	/// @return true = Waiting for SOM, false = parsing
 	///
-	bool IsWaitingForSOM(void){ return m_nRxState == RX_STATE_SOM_1?true:false; }
+	bool IsWaitingForSOM(void) { return m_nRxState == RX_STATE_SOM_1 ? true : false; }
 
 	///
 	/// @brief This method is called when a successful command is processed
@@ -153,7 +153,7 @@ private:
 	///
 	/// @param pData Pointer to data buffer to write
 	/// @param nLength Number of bytes to write
-	/// \return Number of bytes written
+	/// @return Number of bytes written
 	///
 	virtual int Write(uint8_t *pData, size_t nLength) = 0;
 
@@ -173,7 +173,7 @@ private:
 	/// @param u16CRC Current checksum
 	/// @param pData Buffer to calculate checksum on
 	/// @param bReset When true the method will reset the CRC before running the calculation. When false, the method will continue to calculate the checksum.
-	/// \return uint16_t Calculated CRC
+	/// @return uint16_t Calculated CRC
 	///
 	uint16_t crc16(uint16_t u16CRC, uint8_t * pData, int nLen, bool bReset = false);
 };
