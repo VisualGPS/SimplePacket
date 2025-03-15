@@ -30,24 +30,24 @@ There are some mandatory virtual methods that the derived class will need to red
 
 ```cpp
     ///
-    /// \brief You must redefine this method to write data to your serial media.
+    /// @brief You must redefine this method to write data to your serial media.
     ///
     /// NOTE: The transport media can be whatever your project requires.
     ///
-    /// \param pData Pointer to data buffer to write
-    /// \param nLength Number of bytes to write
-    /// \return Number of bytes written
+    /// @param pData Pointer to data buffer to write
+    /// @param nLength Number of bytes to write
+    /// @return Number of bytes written
     ///
     virtual int Write(uint8_t *pData, size_t nLength) = 0;
 
     ///
-    /// \brief This method is called when a successful command is processed
+    /// @brief This method is called when a successful command is processed
     ///
     /// Redefine this class in your child class to parse commands that you have defined.
     ///
-    /// \param uCommand Two byte command
-    /// \param pData Pointer to data buffer of received data for this command
-    /// \param nLength Number of data bytes received
+    /// @param uCommand Two byte command
+    /// @param pData Pointer to data buffer of received data for this command
+    /// @param nLength Number of data bytes received
     ///
     virtual void OnProcessCommand(uint16_t uCommand, uint8_t *pData, size_t nLength) = 0;
 ```
@@ -56,27 +56,27 @@ There are some optional virtual methods that can be redefined to help with data 
 
 ```cpp
     ///
-    /// \brief This method is called when an error occurs. Please note that
+    /// @brief This method is called when an error occurs. Please note that
     /// uCommand, pData and nLength are not guaranteed and provided for debugging reference
     /// only.
     ///
     /// NOTE: Redefine this method to capture any errors.
     ///
-    /// \param nError ERROR_T error number being reported
-    /// \param uCommand Two byte command
-    /// \param pData Pointer to data buffer of received data for this command
-    /// \param nLength Number of data bytes received
-    /// \param uRxSOM Received SOM - This is what was received
+    /// @param nError ERROR_T error number being reported
+    /// @param uCommand Two byte command
+    /// @param pData Pointer to data buffer of received data for this command
+    /// @param nLength Number of data bytes received
+    /// @param uRxSOM Received SOM - This is what was received
     ///
     virtual void OnError(CSimplePacket::ERROR_E nError, uint16_t uCommand, uint8_t *pData, size_t nLength, uint16_t uRxSOM){}
 
     ///
-    /// \brief Redefine this method to support a mutex lock
+    /// @brief Redefine this method to support a mutex lock
     ///
     virtual void WriteLock(void) {}
 
     ///
-    /// \brief Redefine this method to unlock the mutex
+    /// @brief Redefine this method to unlock the mutex
     ///
     virtual void WriteUnlock(void) {}
 ``` 
