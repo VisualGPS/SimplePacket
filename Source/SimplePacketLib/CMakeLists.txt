@@ -5,12 +5,11 @@ cmake_minimum_required(VERSION 3.20)
 #
 project(SimplePacketLib)
 
-
 if(MSVC)
 	# Do nothing for now...
 else()
-        set(CMAKE_CXX_FLAGS " -Wall")
-        set (CMAKE_CXX_STANDARD 11)
+	set(CMAKE_CXX_FLAGS " -Wall -Werror")
+    set (CMAKE_CXX_STANDARD 11)
 endif ()
 
 #
@@ -27,10 +26,7 @@ add_library(SimplePacketLib
 	SimplePacket.h
 )
 
-#
-# Add additional libraries
-#
-#target_link_libraries(rt pthread)
+target_include_directories(SimplePacketLib INTERFACE . )
 
 # add a target to generate API documentation with Doxygen
 find_package(Doxygen)
