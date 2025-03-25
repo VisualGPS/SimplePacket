@@ -54,6 +54,7 @@ public:
 		ERROR_SOM_1,															///< Error, Bad start of message 1
 		ERROR_SOM_2,															///< Error, Bad start of message 2
 		ERROR_LENGTH_TOO_LARGE,													///< Error, Length received is too large
+		ERROR_RX_BUFFER_SET_NULL,												///< Error, Rx buffer is NULL - You will need to set the rx buffer
 	};
 
 	static const uint8_t	c_u8SOM_1 = 0x55;									///< Start of message (define as needed)
@@ -79,6 +80,11 @@ public:
 	///
 	CSimplePacket(uint8_t *pDataBuff, size_t nDataBuffSize);
 	virtual ~CSimplePacket();
+
+	/// @brief Set the rx and max rx buffer size. Use this if you did not set the buffer size in the constructor.
+	/// @param pDataBuff Pointer to a data buffer to store receive data to
+	/// @param nDataBuffSize Size of pDataBuff
+	void SetRxBuffer(uint8_t *pDataBuff, size_t nDataBuffSize);
 
 	///
 	/// @brief Receive data processor. This method will build a command and

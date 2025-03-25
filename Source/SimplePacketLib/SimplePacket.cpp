@@ -19,7 +19,18 @@ CSimplePacket::~CSimplePacket() {
 	// TODO Auto-generated destructor stub
 }
 
+void CSimplePacket::SetRxBuffer(uint8_t *pDataBuff, size_t nDataBuffSize)
+{
+	m_nMaxRxBuffSize = nDataBuffSize;
+	m_pRxBuffer = pDataBuff;
+}
+
 void CSimplePacket::ProcessRxBuffer(uint8_t *pData, size_t nSize) {
+
+	if(m_pRxBuffer == NULL) {
+		OnError(ERROR_RX_BUFFER_SET_NULL, m_uRxCommand, m_pRxBuffer, m_nRxLength, m_uRxSOM);
+		return;
+	}
 
 	for(size_t i = 0; i < nSize; i++) {
 
