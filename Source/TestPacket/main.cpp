@@ -17,8 +17,11 @@ private:
 	uint8_t				m_pRxBuffer[c_nBuffSize];
 
 public:
-	CCommDevice() :
-		CSimplePacket(m_pRxBuffer, c_nBuffSize) {
+	CCommDevice()
+	: CSimplePacket(m_pRxBuffer, c_nBuffSize) 
+	{
+		// Redundant -- only for test
+		CSimplePacket::SetRxBuffer(m_pRxBuffer, c_nBuffSize);
 	}
 
 	virtual void OnProcessCommand(uint16_t uCommand, uint8_t *pData, size_t nLength) {
