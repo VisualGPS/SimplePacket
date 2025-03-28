@@ -115,21 +115,9 @@ void CSimplePacket::ProcessRxBuffer(uint8_t *pData, size_t nSize) {
 				m_nRxState = RX_STATE_CS_H;
 			}
 			else {
-				// We can receive data byte by byte or as a block. Here we'll determine that
-				// based on the length of the data. For now we'll check for exact fit
-				size_t nBlockSize = nSize - i - m_nRxLength + 1;
-				// Check if we have enough data to fill the data buffer.
-				if(nBlockSize == m_nRxLength) {
-					memcpy(m_pRxBuffer, &pData[i+1], m_nRxLength);
-					m_uChecksum = crc16(m_uChecksum, &pData[i+1], m_nRxLength, false);
-					m_nRxIndex += m_nRxLength;
-					i += m_nRxLength;
-					m_nRxState = RX_STATE_CS_H;
+				m_nRxState = RX_STATE_DATA;
 				}
-				else {
-					m_nRxState = RX_STATE_DATA;
-				}
-			}
+			
 			break;
 
 		case RX_STATE_DATA :
@@ -138,8 +126,28 @@ void CSimplePacket::ProcessRxBuffer(uint8_t *pData, size_t nSize) {
 				m_nRxState = RX_STATE_SOM_1;
 			}
 			else {
-				m_pRxBuffer[m_nRxIndex++] = uData;
-				m_uChecksum = crc16(m_uChecksum, &uData, 1, false);
+				
+				// We can receive data byte by byte or as a block. Here we'll determine that
+				// based on the length of the data. 
+				ssize_t nBlockSize = m_nRxLength - m_nRxIndex;
+				size_t nDataInPacket = nSize - i - 2;
+				// If the data in the packet is larger than the block size, then we'll limit it to the block size
+				// because there maybe back to back packets.
+				if((ssize_t)nDataInPacket > nBlockSize) {
+					nDataInPacket = nBlockSize;
+				}
+				
+				if(nBlockSize > (ssize_t)nDataInPacket) {
+					nDataInPacket += 2;
+				}
+				// debug
+				//printf("Block read of nDataInPacket = %d, nSize = %d, nBlockSize = %d\n", (int)nDataInPacket, (int)nSize, (int)nBlockSize);
+
+				memcpy(&m_pRxBuffer[m_nRxIndex], &pData[i], nDataInPacket);
+				m_uChecksum = crc16(m_uChecksum, &pData[i], nDataInPacket, false);
+				m_nRxIndex += nDataInPacket;
+				i += nDataInPacket - 1;
+
 				if(m_nRxIndex >= m_nRxLength) {
 					m_nRxState = RX_STATE_CS_H;
 				}
