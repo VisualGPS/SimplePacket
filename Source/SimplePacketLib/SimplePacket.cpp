@@ -6,6 +6,7 @@
  */
 #include "SimplePacket.h"
 #include <stdio.h>
+#include <memory.h>
 
 CSimplePacket::CSimplePacket(uint8_t *pDataBuff, size_t nDataBuffSize) {
 
@@ -114,7 +115,20 @@ void CSimplePacket::ProcessRxBuffer(uint8_t *pData, size_t nSize) {
 				m_nRxState = RX_STATE_CS_H;
 			}
 			else {
-				m_nRxState = RX_STATE_DATA;
+				// We can receive data byte by byte or as a block. Here we'll determine that
+				// based on the length of the data. For now we'll check for exact fit
+				size_t nBlockSize = nSize - i - m_nRxLength + 1;
+				// Check if we have enough data to fill the data buffer.
+				if(nBlockSize == m_nRxLength) {
+					memcpy(m_pRxBuffer, &pData[i+1], m_nRxLength);
+					m_uChecksum = crc16(m_uChecksum, &pData[i+1], m_nRxLength, false);
+					m_nRxIndex += m_nRxLength;
+					i += m_nRxLength;
+					m_nRxState = RX_STATE_CS_H;
+				}
+				else {
+					m_nRxState = RX_STATE_DATA;
+				}
 			}
 			break;
 
