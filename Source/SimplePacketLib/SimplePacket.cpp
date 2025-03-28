@@ -122,6 +122,7 @@ void CSimplePacket::ProcessRxBuffer(uint8_t *pData, size_t nSize) {
 				if(nBlockSize == m_nRxLength) {
 					memcpy(m_pRxBuffer, &pData[i+1], m_nRxLength);
 					m_uChecksum = crc16(m_uChecksum, &pData[i+1], m_nRxLength, false);
+					m_nRxIndex += m_nRxLength;
 					i += m_nRxLength;
 					m_nRxState = RX_STATE_CS_H;
 				}
