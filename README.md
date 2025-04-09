@@ -115,6 +115,7 @@ Run VisualStudio and load the project
 
 ## Packet State Machine
 
+```plantuml
 @startuml
 (RX_STATE_SOM_1)
 (RX_STATE_SOM_2)
@@ -147,3 +148,4 @@ RX_STATE_DATA --> RX_STATE_CS_H
 RX_STATE_DATA --> RX_STATE_SOM_1
 RX_STATE_DATA --> RX_STATE_DATA
 @enduml
+```
