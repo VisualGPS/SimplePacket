@@ -1,4 +1,5 @@
 # SimplePacket
+
 Monte Variakojis @VisualGPS
 
 The SimplePacket project demonstrates a simple robust packet protocol for use with various media such as serial ports or even sockets. SimplePacket is intended to be very simple and has been used in many projects and platforms including Linux, Windows, and embedded projects. It's only two files, SimplePacket.cpp and SimplePacket.h.
@@ -8,6 +9,7 @@ The SimplePacket project demonstrates a simple robust packet protocol for use wi
 The packet is composed of a Start of Message (SOM), command, data length, data payload, and a checksum field. All protocol data is represented in Big Endian encoding. Although it's up to you on how the data payload is used. It's recommended that any formatted payload data follows Big Endian encoding.
 
 ### Packet
+
 | SOM | COMMAND | DATA_LENGTH | DATA | CRC
 
 #### Field Description
@@ -79,15 +81,15 @@ There are some optional virtual methods that can be redefined to help with data 
     /// @brief Redefine this method to unlock the mutex
     ///
     virtual void WriteUnlock(void) {}
-``` 
+```
 
 ## Requirements
 
 The class library is two files, SimplePacket.cpp and SimplePacket.h and includes no third party libraries.
 
-  - C++ (C11)
-  - cmake - CMake is an open-source, cross-platform family of tools designed to build, test and package software. 
-  - doxygen (optional) Builds html documentation
+- C++ (C11)
+- cmake - CMake is an open-source, cross-platform family of tools designed to build, test and package software. 
+- doxygen (optional) Builds html documentation
 
 ## Build
 
@@ -96,19 +98,53 @@ This project is managed using cmake and can be built using your favorite operati
 ### Linux/Unix based
 
 ```bash
-$ mkdir ./BuildSimplePacket
-$ cd ./BuildSimplePacket
-$ cmake ../Source
-$ make
+mkdir ./BuildSimplePacket
+cd ./BuildSimplePacket
+cmake ../Source
+make
 ```
 
 ### Windows
 
 ```bash
-$ mkdir ./BuildSimplePacket
-$ cd ./BuildSimplePacket
-$ cmake ../Source
-$ Run VisualStudio and load the project
+mkdir ./BuildSimplePacket
+cd ./BuildSimplePacket
+cmake ../Source
+Run VisualStudio and load the project
 ```
 
+## Packet State Machine
 
+```plantuml
+
+(RX_STATE_SOM_1)
+(RX_STATE_SOM_2)
+(RX_STATE_CMD_H)
+(RX_STATE_CMD_L)
+(RX_STATE_LENGTH_H1)
+(RX_STATE_LENGTH_H2)
+(RX_STATE_LENGTH_H3)
+(RX_STATE_LENGTH_L)
+(RX_STATE_DATA)
+(RX_STATE_CS_H)
+(RX_STATE_CS_L)
+
+
+RX_STATE_SOM_1 --> RX_STATE_SOM_1
+RX_STATE_SOM_1 --> RX_STATE_SOM_2
+RX_STATE_SOM_2 --> RX_STATE_SOM_1
+RX_STATE_SOM_2 --> RX_STATE_CMD_H
+RX_STATE_CMD_H --> RX_STATE_CMD_L
+RX_STATE_CMD_L --> RX_STATE_LENGTH_H1
+RX_STATE_LENGTH_H1 --> RX_STATE_LENGTH_H2
+RX_STATE_LENGTH_H2 --> RX_STATE_LENGTH_H3
+RX_STATE_LENGTH_H3 --> RX_STATE_LENGTH_L
+RX_STATE_LENGTH_L --> RX_STATE_SOM_1
+RX_STATE_LENGTH_L --> RX_STATE_DATA
+RX_STATE_LENGTH_L --> RX_STATE_CS_H
+RX_STATE_CS_H --> RX_STATE_CS_L
+RX_STATE_CS_L --> RX_STATE_SOM_1
+RX_STATE_DATA --> RX_STATE_CS_H
+RX_STATE_DATA --> RX_STATE_SOM_1
+RX_STATE_DATA --> RX_STATE_DATA
+```
